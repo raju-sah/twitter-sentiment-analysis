@@ -4,7 +4,7 @@ A Twitter / text sentiment classifier built from scratch (logistic regression on
 NLTK's `twitter_samples` corpus) exposed through a production-style web app:
 
 - **Frontend:** React + Vite, deployed on [Vercel](https://vercel.com)
-- **Backend:** FastAPI serving a trained model, deployed on [Koyeb](https://www.koyeb.com)
+- **Backend:** FastAPI serving a trained model, deployed on [Northflank](https://northflank.com)
 - **Model:** Logistic regression implemented from scratch (sigmoid + gradient descent)
 
 Users type a tweet or sentence; the API returns a positive/negative label with a
@@ -16,7 +16,7 @@ confidence score and the processed tokens.
 Browser (React + Vite @ Vercel)
         │  POST /predict  (HTTPS, CORS)
         ▼
-FastAPI @ Koyeb (free tier)
+FastAPI @ Northflank (free tier)
         │  loads model.pkl on startup
         ▼
 { freqs, theta }   ← trained offline, committed as backend/model.pkl
@@ -33,7 +33,7 @@ FastAPI @ Koyeb (free tier)
 
 ```
 twitter-sentiment-analysis/
-├── backend/            # FastAPI service → Koyeb
+├── backend/            # FastAPI service → Northflank (Docker)
 │   ├── app.py          # API: /predict, /health, CORS
 │   ├── train.py        # trains the model and writes model.pkl
 │   ├── utils.py        # process_tweet, feature extraction, prediction
@@ -90,16 +90,16 @@ can leave `VITE_API_URL` unset locally.
 
 ## Deployment
 
-### Backend → Koyeb
+### Backend → Northflank
 
 1. Push this repo to GitHub.
-2. In Koyeb, create a **Web Service** from the GitHub repo.
-3. Set the **root directory** to `backend`.
-4. Build command: `pip install -r requirements.txt`
-5. Start command: `uvicorn app:app --host 0.0.0.0 --port $PORT`
-6. Expose port `$PORT`. Koyeb assigns a public `*.koyeb.app` URL.
+2. In Northflank, create a **Service** (type: *Web Service*) from the GitHub repo.
+3. Set the **build context** / root directory to `backend`.
+4. Northflank builds the included `Dockerfile` (installs deps + NLTK stopwords, then runs `uvicorn` on `$PORT`).
+5. Northflank assigns a public `*.northflank.app` URL and injects `PORT`.
 
-`model.pkl` is committed, so no training happens at deploy time.
+`model.pkl` is committed, so no training happens at deploy time. The container
+downloads NLTK `stopwords` at build time, so the running service works offline.
 
 ### Frontend → Vercel
 
