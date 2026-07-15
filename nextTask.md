@@ -1,0 +1,1 @@
+can we also show the all the history of the users interactions as well, we show the unknown user, is it good idea or only show the all the history of the current session interacting user only , validate it and tell me what to do?
