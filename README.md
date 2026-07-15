@@ -10,6 +10,14 @@ NLTK's `twitter_samples` corpus) exposed through a production-style web app:
 Users type a tweet or sentence; the API returns a positive/negative label with a
 confidence score and the processed tokens.
 
+## Live Demo
+
+- **App:** https://twitter-sentiment-analysis-chi.vercel.app/
+- **API:** https://twitter-sentiment-analysis-z52r.onrender.com ([`/health`](https://twitter-sentiment-analysis-z52r.onrender.com/health), [`/docs`](https://twitter-sentiment-analysis-z52r.onrender.com/docs))
+
+> The backend runs on Render's free tier and sleeps after ~15 min of inactivity,
+> so the first request may take 20–60s to wake up.
+
 ## Architecture
 
 ```
